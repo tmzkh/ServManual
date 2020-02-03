@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/* Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+}); */
+
+Route::get('/factorydevices', 'FactoryDeviceController@index');
+Route::get('/factorydevices/{id}', 'FactoryDeviceController@show');
+Route::post('/factorydevices', 'FactoryDeviceController@store');
+Route::put('/factorydevices', 'FactoryDeviceController@store');
+Route::delete('/factorydevices/{id}', 'FactoryDeviceController@destroy');
