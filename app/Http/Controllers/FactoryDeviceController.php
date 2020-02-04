@@ -26,18 +26,14 @@ class FactoryDeviceController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $fd = $request->isMethod('put') ? 
-            FactoryDevice::findOrFail($request->id) : 
-            new FactoryDevice;
+        $fd = new FactoryDevice;
 
-        $fd->Id = $request->input('id');
         $fd->Name = $request->input('name');
         $fd->Year = $request->input('year');
         $fd->Type = $request->input('type');
 
         if ($fd->save()) {
             return new FactoryDeviceResource($fd);
-            /* return $fd; */
         }
     }
 
@@ -50,6 +46,27 @@ class FactoryDeviceController extends Controller {
     public function show($id) {
         $fd = FactoryDevice::findOrFail($id);
         return new FactoryDeviceResource($fd);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $fd = FactoryDevice::findOrFail($request->id);
+
+        $fd->Id = $request->input('id');
+        $fd->Name = $request->input('name');
+        $fd->Year = $request->input('year');
+        $fd->Type = $request->input('type');
+
+        if ($fd->save()) {
+            return new FactoryDeviceResource($fd);
+        }
     }
 
     /**

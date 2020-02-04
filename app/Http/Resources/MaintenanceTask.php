@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FactoryDevice extends JsonResource
+class MaintenanceTask extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,15 +15,21 @@ class FactoryDevice extends JsonResource
     public function toArray($request) {
         return [
             'id' => $this->Id ? $this->Id : $this->id,
-            'name' => $this->Name,
-            'year' => $this->Year,
-            'type' => $this->Type,
+            'factoryDeviceId' => $this->FactoryDeviceId,
+            'description' => $this->Description,
+            'criticality' => $this->Criticality,
+            'completedAt' => $this->CompletedAt,
+            'completed' => $this->CompletedAt ? true : false,
+            'createdAt' => $this->created_at
         ];
     }
 
+    /**
+     * Add link to self
+     */
     public function with($request) {
         $id = $this->Id ? $this->Id : $this->id;
-        $location = '/api/factorydevices/' . $id;
+        $location = '/api/maintenancetasks/' . $id;
         return [
             'links' => [
                 'self' => $location
