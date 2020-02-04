@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Api\StoreMaintenanceTask;
+use App\Http\Requests\Api\UpdateMaintenanceTask;
+use Carbon\Carbon;
 
 use App\FactoryDevice;
 use App\MaintenanceTask;
 use App\Http\Resources\MaintenanceTask as MaintenanceTaskResource;
 
-class MaintenanceTaskController extends Controller
-{
+class MaintenanceTaskController extends Controller {
 
     /**
      * Display a listing of the resource.
@@ -33,13 +35,12 @@ class MaintenanceTaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(StoreMaintenanceTask $request) {
+        echo $request;
         $mt = new MaintenanceTask;
-
         $mt->FactoryDeviceId = $request->input('factoryDeviceId');
         $mt->Description = $request->input('description');
         $mt->Criticality = $request->input('criticality');
-
         if ($mt->save()) {
             return new MaintenanceTaskResource($mt);
         }
@@ -63,14 +64,20 @@ class MaintenanceTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(UpdateMaintenanceTask $request, $id) {
         $mt = MaintenanceTask::findOrFail($id);
+
+
+        echo $mt;
 
         $mt->Id = $request->input('id');
         $mt->FactoryDeviceId = $request->input('factoryDeviceId');
         $mt->Description = $request->input('description');
         $mt->Criticality = $request->input('criticality');
-        $mt->Id = $request->input('completedAt');
+        $completedAt = $mt->CompletedAt != null ? 
+            $mt->CompletedAt : 
+            Carbon::now()->format('Y-m-d H:i:s');
+        $mt->CompletedAt = $request->input('completed') ? $completedAt : null;
 
         if ($mt->save()) {
             return new MaintenanceTaskResource($mt);
