@@ -25,7 +25,7 @@ class UpdateMaintenanceTask extends LaravelFormRequest {
      */
     public function rules() {
         return [
-            'id' => 'required|integer',
+            //'id' => 'required|integer',
             'factoryDeviceId' => 'required|integer',
             'description' => 'required|string',
             'criticality' => 'required|integer|min:0|max:2',

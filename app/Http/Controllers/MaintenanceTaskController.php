@@ -64,21 +64,16 @@ class MaintenanceTaskController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMaintenanceTask $request, $id) {
-        $mt = MaintenanceTask::findOrFail($id);
+    public function update(UpdateMaintenanceTask $request, $Id) {
+        $mt = MaintenanceTask::findOrFail($Id);
 
-
-        echo $mt;
-
-        $mt->Id = $request->input('id');
+        $mt->id = $mt->Id;
         $mt->FactoryDeviceId = $request->input('factoryDeviceId');
         $mt->Description = $request->input('description');
         $mt->Criticality = $request->input('criticality');
         $completedAt = $mt->CompletedAt != null ? 
-            $mt->CompletedAt : 
-            Carbon::now()->format('Y-m-d H:i:s');
+            $mt->CompletedAt : Carbon::now();
         $mt->CompletedAt = $request->input('completed') ? $completedAt : null;
-
         if ($mt->save()) {
             return new MaintenanceTaskResource($mt);
         }
